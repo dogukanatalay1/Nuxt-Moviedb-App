@@ -91,11 +91,12 @@
                   }}
                 </p>
               </div>
-             
-            </div>
-             <div class="flip-card-back">
+                <div class="flip-card-back">
                 <p class="overview">{{ movie.overview }}</p>
               </div>
+             
+            </div>
+           
           </div>
           <NuxtLink
             class="button button-ligth"
@@ -170,6 +171,7 @@ $light-blue: #70d7d6;
       border-bottom-left-radius: 0;
       height: 42.25px;
     }
+    
   }
   .movies {
     width: 85%;
@@ -216,20 +218,23 @@ $light-blue: #70d7d6;
             backface-visibility: hidden;
           }
 
+          
           .flip-card-back {
             transform: rotateY(180deg);
 
+            
             .overview {
               line-height: 1.5;
-              position: absolute;
+              position: relative;
               bottom: 0;
-              background-color: $box-shadow;
+              background-color: #fff;
               padding: 12px;
               color: #fff;
-              transform: translateY(100%);
+              // transform: translateY(100%);
               transition: 0.5s ease-in-out all;
             }
           }
+          
         }
 
         .movie-img {

@@ -80,6 +80,7 @@ export default {
     .button {
       font-size: 20px;
       align-self: flex-start;
+      width: 140px ;
     }
   }
 }
