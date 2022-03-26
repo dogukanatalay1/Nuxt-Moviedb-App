@@ -47,7 +47,7 @@ import axios from 'axios'
 import Loading from '../../components/Loading.vue'
 
 export default {
-  name: 'single-movie',
+  name: 'SingleMovie',
   components: { Loading },
   data() {
     return {
@@ -71,6 +71,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$light-blue: #70d7d6;
+
 .single-movie {
   color: #fff;
   min-height: 100vh;
@@ -117,7 +119,7 @@ export default {
           text-decoration: underline;
         }
         .line-header{
-          color: #c92502;
+          color: $light-blue;
         }
       }
       .tagline {

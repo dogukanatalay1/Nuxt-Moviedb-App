@@ -6,67 +6,26 @@
 
     <!-- Search -->
     <div class="container search">
-      <input
-        v-model.lazy="searchInput"
-        type="text"
-        placeholder="Search"
-        @keyup.enter="$fetch"
-      />
+      <input v-model="searchInput" type="text" placeholder="Search" />
       <button
         v-show="searchInput !== ''"
         class="button clear-button"
         @click="clearSearch"
       >
-        Clear Search
+        Clear search
       </button>
     </div>
 
     <!-- Loading -->
-    <Loading v-if="$fetchState.pending" />
+    <!-- <Loading v-if="$fetchState.pending" />  -->
 
     <!-- Movies -->
-    <div v-else class="container movies">
+    <div class="container movies">
       <!-- Searched Movies -->
-      <div v-if="searchInput !== ''" id="movie-grid" class="movies-grid">
-        <div
-          v-for="(movie, index) in searchedMovies"
-          :key="index"
-          class="movie"
-        >
-          <div class="movie-img">
-            <img
-              :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`"
-              alt=""
-            />
-            <p class="review">{{ movie.vote_average }}</p>
-            <p class="overview">{{ movie.overview }}</p>
-          </div>
-          <div class="info">
-            <p class="title">
-              {{ movie.title.slice(0, 25)
-              }}<span v-if="movie.title.length > 35">...</span>
-            </p>
-            <p class="release">
-              Released:
-              {{
-                new Date(movie.release_date).toLocaleString('en-us', {
-                  month: 'long',
-                  day: 'numeric',
-                  year: 'numeric',
-                })
-              }}
-            </p>
-            <NuxtLink
-              class="button button-ligth"
-              :to="{ name: 'movies-movieid', params: { movieid: movie.id } }"
-              >Get More Info</NuxtLink
-            >
-          </div>
-        </div>
-      </div>
 
-      <!-- Now Streaming -->
-      <div v-else id="movie-grid" class="movies-grid">
+
+
+      <div v-if="searchInput !== ''" id="movie-grid" class="movies-grid">
         <div v-for="(movie, index) in movies" :key="index" class="movie">
           <div class="movie-img">
             <img
@@ -75,7 +34,6 @@
             />
             <p class="review">{{ movie.vote_average }}</p>
             <p class="overview">{{ movie.overview }}</p>
-            <button class="button button-light"></button>
           </div>
           <div class="info">
             <p class="title">
@@ -100,60 +58,84 @@
           </div>
         </div>
       </div>
+
+      
+      <!-- Search results -->
+      <div v-else id="movie-grid" class="movies-grid">
+        <div v-for="(movie, index) in movies" :key="index" class="movie">
+          <div class="movie-img">
+            <img
+              :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`"
+              alt=""
+            />
+            <p class="review">{{ movie.vote_average }}</p>
+
+            <p class="overview">{{ movie.overview }}</p>
+          </div>
+          <div class="info">
+            <p class="title">
+              {{ movie.title.slice(0, 25)
+              }}<span v-if="movie.title.length > 30">...</span>
+            </p>
+            <p class="release">
+              Released:
+              {{
+                new Date(movie.release_date).toLocaleString('en-us', {
+                  month: 'long',
+                  day: 'numeric',
+                  year: 'numeric',
+                })
+              }}
+            </p>
+            <NuxtLink
+              class="button button-ligth"
+              :to="{ name: 'movies-movieid', params: { movieid: movie.id } }"
+              >Get More Info</NuxtLink
+            >
+            
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
   name: 'IndexPage',
   data() {
     return {
-      movies: [],
-      searchedMovies: [],
-      searchInput: '',
+     searchInput: '', 
     }
   },
-  async fetch() {
-    if (this.searchInput === '') {
-      await this.getMovies()
-      return
-    }
-    await this.searchMovies()
+  computed: {
+    movies() {
+      return this.$store.getters.movies
+    },
   },
-  fetchDelay: 1000,
+  watch: {
+    searchInput() {
+      this.$store.dispatch('searchMovies', this.searchInput)
+    },
+  },
+  mounted() {
+    this.$store.dispatch('getMovies')
+  },
   methods: {
-    async getMovies() {
-      const data = axios.get(
-        `https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.API_KEY}&language=en-US&page=1`
-      )
-      const result = await data
-      result.data.results.forEach((movie) => {
-        this.movies.push(movie)
-      })
-    },
-    async searchMovies() {
-      const data = axios.get(
-        `https://api.themoviedb.org/3/search/movie?api_key=37ed43a4f8eaa2abd75f9283692947bc&language=en-US&page=1&query=${this.searchInput}`
-      )
-      const result = await data
-      result.data.results.forEach((movie) => {
-        this.searchedMovies.push(movie)
-      })
-    },
     clearSearch() {
       this.searchInput = ''
-      this.searchedMovies = []
     },
   },
 }
 </script>
 
-
-
 <style lang="scss" scoped>
+$background-color: #0a1b22;
+$box-shadow: #193a46;
+$button: #4f98a5;
+$button-hover: #306771;
+$light-blue: #70d7d6;
+
 .home {
   .loading {
     padding-top: 120px;
@@ -170,6 +152,7 @@ export default {
       padding: 12px 6px;
       font-size: 14px;
       border: none;
+
       &:focus {
         outline: none;
       }
@@ -177,7 +160,7 @@ export default {
     .button {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
-      height: 40px;
+      height: 42.25px;
     }
   }
   .movies {
@@ -188,6 +171,7 @@ export default {
       column-gap: 32px;
       row-gap: 64px;
       grid-template-columns: 1fr;
+
       @media (min-width: 500px) {
         grid-template-columns: repeat(2, 1fr);
       }
@@ -201,10 +185,16 @@ export default {
         position: relative;
         display: flex;
         flex-direction: column;
+
         .movie-img {
           position: relative;
           overflow: hidden;
+          border-radius: 10px;
+
+          box-shadow: 8px 12px 16px $box-shadow;
           &:hover {
+            box-shadow: 10px 14px 20px $button-hover;
+            transition: box-shadow 500ms;
             .overview {
               transform: translateY(0);
             }
@@ -223,7 +213,7 @@ export default {
             align-items: center;
             width: 40px;
             height: 40px;
-            background-color: #c92502;
+            background-color: $box-shadow;
             color: #fff;
             border-radius: 0 0 16px 0;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
@@ -233,11 +223,11 @@ export default {
             line-height: 1.5;
             position: absolute;
             bottom: 0;
-            background-color: rgba(201, 38, 2, 0.9);
+            background-color: $box-shadow;
             padding: 12px;
             color: #fff;
             transform: translateY(100%);
-            transition: 0.3s ease-in-out all;
+            transition: 0.5s ease-in-out all;
           }
         }
         .info {

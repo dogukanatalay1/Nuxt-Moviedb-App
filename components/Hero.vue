@@ -3,8 +3,8 @@
     <img src="../assets/imgs/movieHero.jpg" alt="" />
     <div class="text-container">
       <div class="text">
-        <span class="mini-heading"> mymovieapp.com </span>
-        <h1><span>Now</span> Streaming</h1>
+        <span class="mini-heading"> dogusdb.com </span>
+        <h1><span>Dogus's</span> Movie App</h1>
         <a href="#movie-grid" class="button">View Movies</a>
       </div>
     </div>
@@ -59,8 +59,7 @@ export default {
     .mini-heading {
       font-weight: 600;
       font-size: 18px;
-      text-transform: uppercase;
-      color: #c92502;
+      color: #fff;
       margin-bottom: 8px;
       @media (min-width: 750px) {
         font-size: 22px;

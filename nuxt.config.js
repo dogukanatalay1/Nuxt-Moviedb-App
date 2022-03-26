@@ -34,7 +34,8 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    '@nuxtjs/dotenv'
+    '@nuxtjs/dotenv',
+    '@nuxtjs/fontawesome'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
