@@ -18,6 +18,9 @@ export const actions = {
         const result = await data
         const tempData = []
         result.data.results.forEach((movie) => {
+            console.log(movie.title)
+        })
+        result.data.results.forEach((movie) => {
             tempData.push(movie)
         })
         vuexContext.commit('setMovies', tempData)
@@ -28,6 +31,9 @@ export const actions = {
         )
         const result = await data
         const searchData = []
+        result.data.results.forEach((movie) => {
+            console.log(movie.title)
+        })
         result.data.results.forEach((movie) => {
             searchData.push(movie)
         })

@@ -84,6 +84,7 @@ $light-blue: #70d7d6;
   .button {
     align-self: flex-start;
     margin-bottom: 32px;
+    width: 65px !important;
   }
   .movie-info {
     display: flex;
